@@ -79,7 +79,8 @@ Future<void> versionBump(
           final gitDir = await GitDir.fromExisting(".");
           await gitDir.runCommand(["add", "."]);
           await gitDir.runCommand(["commit", "-m", "[RELEASE] $newVersion"]);
-          await gitDir.runCommand(["tag", "-a", "$newVersion", "-m", ""]);
+          await gitDir
+              .runCommand(["tag", "-a", "$newVersion", "-m", "Release"]);
         }
 
         break;
