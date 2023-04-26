@@ -86,7 +86,8 @@ Future<void> versionBump(
       }
       lineNumber++;
     }
-  } catch (_) {
+  } catch (err) {
+    print(err);
     print('Error reading file: $path');
     exit(1);
   }
