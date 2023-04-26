@@ -9,3 +9,7 @@
 ## 1.0.0
 
 - First working release
+
+## 1.2.0
+
+- Add git integration
