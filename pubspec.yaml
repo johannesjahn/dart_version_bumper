@@ -11,3 +11,4 @@ environment:
 
 dependencies:
   args: ^2.4.0
+  git: ^2.2.0

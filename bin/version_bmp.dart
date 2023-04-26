@@ -1,21 +1,27 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:git/git.dart';
 
-void main(List<String> arguments) {
+void main(List<String> arguments) async {
   exitCode = 0; // presume success
   final parser = ArgParser()
     ..addOption("path", abbr: "p", defaultsTo: "pubspec.yaml")
-    ..addOption("type", abbr: "t", defaultsTo: "patch");
+    ..addOption("type", abbr: "t", defaultsTo: "patch")
+    ..addFlag("git", abbr: "g", defaultsTo: false);
 
   ArgResults argResults = parser.parse(arguments);
 
-  dcat(path: argResults['path'], type: argResults['type']);
+  await versionBump(
+      path: argResults['path'],
+      type: argResults['type'],
+      git: argResults['git']);
 }
 
 const validTypes = ['major', 'minor', 'patch'];
 
-Future<void> dcat({required String path, required String type}) async {
+Future<void> versionBump(
+    {required String path, required String type, required bool git}) async {
   var lineNumber = 0;
   var file = File(path);
 
@@ -33,7 +39,6 @@ Future<void> dcat({required String path, required String type}) async {
   var lines = file.readAsLinesSync();
   try {
     for (final line in lines) {
-      stdout.writeln(line);
       RegExp exp = RegExp(r'version: (\d+.\d+.\d+)\+?(\d+)?');
       String str = line;
       RegExpMatch? match = exp.firstMatch(str);
@@ -69,6 +74,13 @@ Future<void> dcat({required String path, required String type}) async {
         // write new version to file
         lines[lineNumber] = 'version: $newVersion';
         file.writeAsStringSync(lines.join('\n'));
+
+        if (git && await GitDir.isGitDir(".")) {
+          final gitDir = await GitDir.fromExisting(".");
+          await gitDir.runCommand(["add", "."]);
+          await gitDir.runCommand(["commit", "-m", "[RELEASE] $newVersion"]);
+          await gitDir.runCommand(["tag", "-a", "$newVersion", "-m", ""]);
+        }
 
         break;
       }

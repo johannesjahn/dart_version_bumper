@@ -9,5 +9,21 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.0"
+  git:
+    dependency: "direct main"
+    description:
+      name: git
+      sha256: "840c57646dd22c63b3305a8ef962215f0e9e9a9ba2876e6632083026b8c65f43"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
+  path:
+    dependency: transitive
+    description:
+      name: path
+      sha256: "8829d8a55c13fc0e37127c29fedf290c102f4e40ae94ada574091fe0ff96c917"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.8.3"
 sdks:
   dart: ">=2.19.6 <3.0.0"
