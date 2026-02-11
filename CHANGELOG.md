@@ -29,3 +29,7 @@
 ## 1.2.4
 
 - Dependency Bumps
+
+## 1.2.5
+
+- Dependency Bumps
